@@ -1,0 +1,13 @@
+{
+  "name": "Tarjetas Flash",
+  "version": "1.0",
+  "description": "Not available",
+  "background_page": "background.html",
+  "permissions" : ["tabs", "http://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["jquery-1.6.1.js", "tarjetasflash.js"]
+    }
+  ]
+}
