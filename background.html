@@ -53,9 +53,14 @@ function onRequest(request, sender, callback)
    'success': function(data, textStatus, jqXHR) { 
                 if (data.rows.length == 0) {
                   console.log("*NOT FOUND, insert it*");
-                  db.saveDoc(request);
+                  var doc = request;
+                  doc.timestamp = [doc.timestamp];
+                  db.saveDoc(doc);
                 } else {
-                  console.log("*FOUND*. skip it.");
+                  console.log("*FOUND*. add new timestamp");
+                  var doc = data.rows[0].value;
+                  doc.timestamp = doc.timestamp.concat([request.timestamp]);
+                  db.saveDoc(doc);
                 }
               }  
     });  
