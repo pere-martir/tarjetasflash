@@ -1,18 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!--                
+<script type="text/javascript" 
+        src=" https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 
+<script type="text/javascript" 
+        src="http://peremartir.iriscouch.com/_utils/script/jquery.couch.js"></script>
+
+<script type="text/javascript" 
+        src="http://peremartir.cloudant.com/tarjetasflash/_utils/script/jquery.couch.js" /></script>
+-->        
+
+<!-- I cannot link to jquery.couch.js on peremartir.cloudant.com, 
+     the authentication is neeed. -->
+<script type="text/javascript" src="jquery-1.6.1.js"></script>     
+<script type="text/javascript" src="jquery.couch.js"></script>
+   
 <script>
 
+String.prototype.format = function() {
+    var formatted = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+        formatted = formatted.replace(regexp, arguments[i]);
+    } 
+    return formatted;
+};
+  
+function onRequest(request, sender, callback) 
+{
+  console.log("url: " + request.url + " word: " + request.word);
+  
+  // Since 'urlPrefix' is default to the domain of the script, 
+  // it must be overriden before opening the db.
+  $.couch.urlPrefix = 'http://peremartir.cloudant.com';
+  //$.couch.urlPrefix = 'peremartir.iriscouch.com';
+  
+  var db = $.couch.db('tarjetasflash');
+  
+  // Cloudant doesn't support the temporary view.
+  /*
+  var mapFn = 'function (doc) { ' +
+              '  if (doc.word == "' + request.word + '") {' +
+              '    emit(doc._id, null);' +
+              '  }' +
+              '}';
+  var exists = db.query(mapFn, null, "javascript", {});
+  */
+  var rows = db.view("company/find", {
+   'key': request.lang + '_' + request.word,
+   'success': function(data, textStatus, jqXHR) { 
+                if (data.rows.length == 0) {
+                  console.log("*NOT FOUND, insert it*");
+                  db.saveDoc(request);
+                } else {
+                  console.log("*FOUND*. skip it.");
+                }
+              }  
+    });  
+  
+  callback({});
+}
 
 
-chrome.tabs.onUpdated.addListener(
-  function(tabId, changeInfo, tab) {
-    if (changeInfo.status == "complete") {
-      //get_main_entries();
-    }
-  });
-
+chrome.extension.onRequest.addListener(onRequest);
   
 
   
