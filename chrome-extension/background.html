@@ -30,7 +30,7 @@ String.prototype.format = function() {
   
 function onRequest(request, sender, callback) 
 {
-  console.log("url: " + request.url + " word: " + request.word);
+  console.log("onRequest, word=" + request.word);
   
   // Since 'urlPrefix' is default to the domain of the script, 
   // it must be overriden before opening the db.
