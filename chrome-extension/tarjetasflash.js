@@ -1,6 +1,22 @@
 
 console.log("Hello! This is tarjetaflash.");
 
+// Remove 'WordReference.com' top banner (not ad)
+$('td.namecell').parent('tr').remove();
+
+// Remove top advertisement
+$('div#adleaderboard').parent("td.bannertop").parent('tr').remove();
+
+// Remove right advertisement
+$('div#adright').parent('td.rightcolumn').remove();
+
+// Remove 'Links'
+$('div.actionsH').remove();
+$('div.actions').remove();
+
+// Remove 'Subscribe to the Oxford..' because it's too wide
+$('p.OxAd').remove();
+
 Array.prototype.unique = function() {
   var a = [];
   var l = this.length;
