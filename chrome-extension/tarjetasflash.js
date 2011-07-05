@@ -24,6 +24,7 @@ var elements = [];
 var words = $(".hw,.forma").map(function(index, element) {
     // Trim leading and tailing non-alphabet characters
     // For example: "1. colle" and "2. colle"     
+    $(element).css('border', '2px solid yellowgreen');
     var w = $(element).text().replace(/^[\s0-9.]+|[\s0-9.]+$/g, '');
     elements.push({'domObject': $(element), 'word': w});
     return w;
@@ -48,7 +49,12 @@ $.each(words, function remember_word(_, word) {
       function(response) {
          if ('' != response.word) {            
            var existed = $.grep(elements, function(v) { return v.word == response.word; });
-           $.each(existed, function(i, v) { v.domObject.css('background-color', 'yellow'); });
+           var color;
+           if (response.existed)
+             color = 'yellow';
+           else             
+             color = 'yellowgreen';
+           $.each(existed, function(i, v) { v.domObject.css('background-color', color); });
          }
       });      
   }

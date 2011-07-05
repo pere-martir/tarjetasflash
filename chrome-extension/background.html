@@ -53,20 +53,21 @@ function onRequest(request, sender, callback)
    'key': request.lang + '_' + request.word,
    'success': function(data, textStatus, jqXHR) { 
                 if (data.rows.length == 0) {
-                  callback({'word':''});
+                  callback({'word': request.word, 'existed': false});
                   console.log("*NOT FOUND, insert it*");
                   var doc = request;
                   doc.timestamp = [doc.timestamp];
                   db.saveDoc(doc);                  
                 } else {
-                  callback({'word':request.word});
+                  callback({'word': request.word, 'existed': true});
                   console.log("*FOUND*. add new timestamp");
                   var doc = data.rows[0].value;
                   doc.timestamp = doc.timestamp.concat([request.timestamp]);
                   db.saveDoc(doc);                  
                 }
               },
-    'error': function(status, msg, reason) { callback({'word':''}); }
+    'error': function(status, msg, reason) { 
+      callback({'word':'', 'failedMsg': msg, 'failedReason': reason }); }
     });  
   
 
