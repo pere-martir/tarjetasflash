@@ -19,10 +19,14 @@ Array.prototype.unique = function() {
   <span class="clickable" onclick="redirectWR(event,&quot;OXiten&quot;)">
     <span class="forma"> strada</span> /<span class="fonetica"> 'strada</span>
 */
+var elements = [];
+
 var words = $(".hw,.forma").map(function(index, element) {
     // Trim leading and tailing non-alphabet characters
-    // For example: "1. colle" and "2. colle" 
-    return $(element).text().replace(/^[\s0-9.]+|[\s0-9.]+$/g, '');
+    // For example: "1. colle" and "2. colle"     
+    var w = $(element).text().replace(/^[\s0-9.]+|[\s0-9.]+$/g, '');
+    elements.push({'domObject': $(element), 'word': w});
+    return w;
   }).get().unique(); 
 
 $.each(words, function remember_word(_, word) {
@@ -38,11 +42,15 @@ $.each(words, function remember_word(_, word) {
     if ('iten' == splits[1]) lang = 'it';
     else if ('enit' == splits[1]) return;
     
-    word =  jQuery.trim(word);        
     console.log("TarjetaFlash word: '" + word + "' language: '" + lang + "'");    
     chrome.extension.sendRequest(
       {'lang': lang, 'word': word, 'timestamp': Date.now() },
-      function(response) {});      
+      function(response) {
+         if ('' != response.word) {            
+           var existed = $.grep(elements, function(v) { return v.word == response.word; });
+           $.each(existed, function(i, v) { v.domObject.css('background-color', 'yellow'); });
+         }
+      });      
   }
 );
  
