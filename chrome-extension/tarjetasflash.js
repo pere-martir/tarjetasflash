@@ -17,6 +17,12 @@ $('div.actions').remove();
 // Remove 'Subscribe to the Oxford..' because it's too wide
 $('p.OxAd').remove();
 
+// Avoid the left column from being too wide
+$('td.leftcolumn').attr('width', '120px');
+
+// The names of dictionaries
+$('.small1').remove();
+
 Array.prototype.unique = function() {
   var a = [];
   var l = this.length;
@@ -38,7 +44,8 @@ Array.prototype.unique = function() {
 var elements = [];
 
 // WordReference
-var words = $(".hw,.forma").map(function(index, element) {
+// span.b is usually for reflexive verbs, listed under the non-reflexive ones
+var words = $('.hw, .forma, ol[type="I"] > li > span.b').map(function(index, element) {
     // Trim leading and tailing non-alphabet characters
     // For example: "1. colle" and "2. colle"         
     var w = $(element).text().replace(/^[\s0-9.]+|[\s0-9.]+$/g, '');
