@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js": ["jquery-1.6.1.js", "wordreference.js", "tarjetasflash.js"]
+      "js": ["jquery-1.6.1.js", "tarjetasflash.js"]
     }
   ]
 }
