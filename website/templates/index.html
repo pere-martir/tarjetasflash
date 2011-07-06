@@ -26,7 +26,8 @@ $('td.language').each(function() {
   });
 
 $('td.timestamp').each(function() { 
-  $(this).text(new Date(parseInt($(this).text())).toUTCString());
+  var t = new Date(parseInt($(this).text()));
+  $(this).text(t.getFullYear() + "-" + t.getMonth() + "-" + t.getDay());
   });
 
 }
