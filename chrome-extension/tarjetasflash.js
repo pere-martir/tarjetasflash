@@ -54,6 +54,10 @@ var words = $('.hw, .forma, ol[type="I"] > li > span.b').map(function(index, ele
     return w;
   }).get().unique(); 
 
+// This usually doesn't happen, but we check it just in case when the 
+// implementation of words is wrong by accident.
+words = $.grep(words, function(w) { return -1 == w.indexOf(' '); }); 
+
 $.each(words, function remember_word(_, word) {
     var lang = '';
     var splits = document.location.pathname.split('/');
