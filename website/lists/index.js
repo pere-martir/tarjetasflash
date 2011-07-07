@@ -4,12 +4,30 @@ function(head, req) {
   var Mustache = require("lib/mustache");
   var List = require("vendor/couchapp/lib/list");
   var path = require("vendor/couchapp/lib/path").init(req);
-  
-  var indexPath = path.list('index', 'find', {});
-  
-  provides("html", function() {
-    var total_entries = 0;
+  var lang = req.query['startkey'][0];
+  var sort = req.query['descending'] ? 'desc' : 'asc';
+  var desc = false;
+  if (typeof req.query['descending'] == 'boolean')
+    desc = req.query['descending'];
+
+  provides("html", function() {  
+
+    var lang_it_req = {'startkey': ['it'], 'endkey':['it', {}], 
+                       descending: desc};
+                       
+    var lang_es_req = {'startkey': ['es'], 'endkey':['es', {}], 
+                       descending: desc};           
+                      
+    var sort_desc = {descending: true,  'startkey': [lang, {}], 'endkey': [lang]};
+    var sort_asc =  {descending: false, 'startkey': [lang], 'endkey': [lang,{}]};
+    
     var stash = {
+      curr_lang: lang,
+      curr_sort: sort,
+      link_lang_it:   path.list('index', 'tabla', lang_it_req),
+      link_lang_es:   path.list('index', 'tabla', lang_es_req),      
+      link_sort_desc: path.list('index', 'tabla', sort_desc),
+      link_sort_asc: path.list('index', 'tabla', sort_asc),
       entries : List.withRows(function(row) {
         var e = row.value;
         return {

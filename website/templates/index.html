@@ -9,43 +9,50 @@ td.timestamp {}
 </style>
 
 <script type="text/javascript">
+
 function init()
 {
+
 /*
-$('td.language').map(function() { 
-  return {'es': 'Spanish', 'it': 'Italian'}[$(this).text()];
-}
-
-$('td.timestamp').map(function() { 
-  return new Date($(this).text()).toUTCString();
-}
-*/
-
 $('td.language').each(function() { 
   $(this).text({'es': 'Spanish', 'it': 'Italian'}[$(this).text()]);
-  });
+});
+*/
 
 $('td.timestamp').each(function() { 
   var t = new Date(parseInt($(this).text()));
-  $(this).text(t.getFullYear() + "-" + t.getMonth() + "-" + t.getDay());
-  });
+  //$(this).text(t.getFullYear() + "-" + (t.getMonth() + 1) + "-" + t.getDate());
+  $(this).text(t.toUTCString());
+});
+
+$('#lang_{{curr_lang}} > a').contents().unwrap();
+$('#sort_{{curr_sort}} > a').contents().unwrap();
 
 }
+
 </script>
+
 <body onload="init()">
+Language:&nbsp;
+<span id="lang_es"><a href="{{link_lang_es}}">Spanish</a></span>&nbsp;
+<span id="lang_it"><a href="{{link_lang_it}}">Italian</a></span>&nbsp;&#124;&nbsp;
+Sort:&nbsp;
+<span id="sort_desc"><a href="{{link_sort_desc}}">Descending</a></span>&nbsp;
+<span id="sort_asc"><a href="{{link_sort_asc}}">Ascending</a></span>&nbsp;&#124;&nbsp;
+Words per page:&nbsp;
+<span id="page_25">25</span>&nbsp; 
+<span id="page_50">50</span>&nbsp; 
+<span id="page_100">100</span>&nbsp;&#124;&nbsp;
+<hr>  
   <table border=1>
     <tr>
       <td>Word</td>              
-      <td>Language</td>             
-      <td>Occurrences</td>
       <td>Last Occurrence</td>
     </tr>
           
     {{#entries}}
     <tr>             
-      <td>{{word}}</td>        
-      <td class='language'>{{lang}}</td>            
-      <td>{{occurrences}}</td>
+      <td>{{word}}</td>      
       <td class='timestamp'>{{lastOccurrences}}</td>
     </tr>        
     {{/entries}}
