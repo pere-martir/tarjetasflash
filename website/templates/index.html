@@ -6,6 +6,12 @@
 <style type="text/css">
 td.language {}
 td.timestamp {}
+span.frequent_word { font-weight:bold } 
+span.normal_word {}
+ul#words_grid    { display: block; width: 800px; }
+ul#words_grid li { display: block; width: 100px; float: left; margin: 1px; padding: 2px } 
+ul#words_grid li.zebra_even { background-color: #918CE3; }
+ul#words_grid li.zebra_odd  { background-color: #f0f0f8; }
 </style>
 
 <script type="text/javascript">
@@ -28,6 +34,9 @@ $('td.timestamp').each(function() {
 $('#lang_{{curr_lang}} > a').contents().unwrap();
 $('#sort_{{curr_sort}} > a').contents().unwrap();
 
+$('#words_grid > li:even').addClass('zebra_even');
+$('#words_grid > li:odd').addClass('zebra_odd');
+
 }
 
 </script>
@@ -44,19 +53,12 @@ Words per page:&nbsp;
 <span id="page_50">50</span>&nbsp; 
 <span id="page_100">100</span>&nbsp;&#124;&nbsp;
 <hr>  
-  <table border=1>
-    <tr>
-      <td>Word</td>              
-      <td>Last Occurrence</td>
-    </tr>
-          
-    {{#entries}}
-    <tr>             
-      <td>{{word}}</td>      
-      <td class='timestamp'>{{lastOccurrences}}</td>
-    </tr>        
-    {{/entries}}
-          
-  </table>        
+
+<ul id="words_grid">
+  {{#entries}}
+  <li class="{{word_class}}"><div style="display:block">{{word}}</div></li>
+  {{/entries}}
+</ul>
+
 </body>    
 </html>

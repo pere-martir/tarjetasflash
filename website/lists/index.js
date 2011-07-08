@@ -32,9 +32,9 @@ function(head, req) {
         var e = row.value;
         return {
           word: e.word,
-          lang: e.lang,            
-          occurrences: e.timestamp.length,
-          lastOccurrences: e.timestamp[row.value.timestamp.length - 1]
+          word_class: e.timestamp.length == 1 ? 'normal_word' : 'frequent_word',
+          //occurrences: e.timestamp.length,
+          //lastOccurrences: e.timestamp[row.value.timestamp.length - 1]
         }
       })
     };
