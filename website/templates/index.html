@@ -15,6 +15,7 @@ span.frequent_word { font-weight:bold }
 span.normal_word {}
 ul#words_grid    { display: block; width: 800px; }
 ul#words_grid li { display: block; width: 100px; float: left; margin: 1px; padding: 2px } 
+ul#words_grid li a:link { color: black } 
 ul#words_grid li.zebra_even { background-color: #918CE3; }
 ul#words_grid li.zebra_odd  { background-color: #f0f0f8; }
 #tooltip.opaque { opacity: 1 }
@@ -71,8 +72,10 @@ Words per page:&nbsp;
 
 <ul id="words_grid">
   {{#entries}}
-  <li class="{{word_class}}">
-    <a href="{{wordreference_link}}" target="_blank">{{word}}</a>
+  <li>
+    <a href="{{wordreference_link}}" target="_blank">
+      <span class="{{word_class}}">{{word}}</span>
+    </a>
   </li>
   {{/entries}}
 </ul>
