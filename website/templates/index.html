@@ -1,7 +1,12 @@
-<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" ></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" 
+        type="text/javascript" ></script>
+<script src="../../script/lib/jquery.dimensions.js" type="text/javascript"></script>
+<script src="../../script/jquery.tooltip.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../style/jquery.tooltip.css" />
 
 <style type="text/css">
 td.language {}
@@ -12,18 +17,12 @@ ul#words_grid    { display: block; width: 800px; }
 ul#words_grid li { display: block; width: 100px; float: left; margin: 1px; padding: 2px } 
 ul#words_grid li.zebra_even { background-color: #918CE3; }
 ul#words_grid li.zebra_odd  { background-color: #f0f0f8; }
+#tooltip.opaque { opacity: 1 }
 </style>
 
 <script type="text/javascript">
 
-function init()
-{
-
-/*
-$('td.language').each(function() { 
-  $(this).text({'es': 'Spanish', 'it': 'Italian'}[$(this).text()]);
-});
-*/
+$(document).ready(function() {
 
 $('td.timestamp').each(function() { 
   var t = new Date(parseInt($(this).text()));
@@ -37,11 +36,27 @@ $('#sort_{{curr_sort}} > a').contents().unwrap();
 $('#words_grid > li:even').addClass('zebra_even');
 $('#words_grid > li:odd').addClass('zebra_odd');
 
-}
+$('#words_grid > li > a').tooltip({
+  delay: 500, showURL: false,
+  top: -25, left: 20, track: false,
+  extraClass: 'opaque',
+  bodyHandler: function() {
+    var word = $(this).text();
+    return '<iframe id="xxx" width=300 height=300 frameborder=0 ' + 
+           ' src="http://api.wordreference.com/0.8/25684/{{curr_lang}}en/' + word + '"/>'; 
+    // Violate SOP    
+    /*var result = $("<span/>").html("some loading indicator");
+        $.get("http://api.wordreference.com/0.8/25684/iten/manzo", {}, function(data) { 
+          result.html(data); }, "html");
+        return result;*/
+  }
+});
+
+});
 
 </script>
 
-<body onload="init()">
+<body>
 Language:&nbsp;
 <span id="lang_es"><a href="{{link_lang_es}}">Spanish</a></span>&nbsp;
 <span id="lang_it"><a href="{{link_lang_it}}">Italian</a></span>&nbsp;&#124;&nbsp;
@@ -56,7 +71,9 @@ Words per page:&nbsp;
 
 <ul id="words_grid">
   {{#entries}}
-  <li class="{{word_class}}"><div style="display:block">{{word}}</div></li>
+  <li class="{{word_class}}">
+    <a href="{{wordreference_link}}" target="_blank">{{word}}</a>
+  </li>
   {{/entries}}
 </ul>
 

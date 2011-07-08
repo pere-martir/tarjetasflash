@@ -33,6 +33,7 @@ function(head, req) {
         return {
           word: e.word,
           word_class: e.timestamp.length == 1 ? 'normal_word' : 'frequent_word',
+          wordreference_link: "http://www.wordreference.com/" + lang + "en/" + e.word
           //occurrences: e.timestamp.length,
           //lastOccurrences: e.timestamp[row.value.timestamp.length - 1]
         }
